@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Cấu hình Dashboard</title>
+    <script src="https://res.cdn.office.net/teams-js/2.11.0/js/MicrosoftTeams.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; text-align: center; }
+    </style>
+</head>
+<body>
+    <h3>Cài đặt Dashboard Thống Kê cho Nhóm</h3>
+    <p>Hệ thống đã sẵn sàng. Vui lòng bấm nút <b>Lưu (Save)</b> ở góc dưới để thêm Tab này vào nhóm.</p>
+
+    <script>
+        // Khởi tạo giao tiếp với Teams
+        microsoftTeams.app.initialize().then(() => {
+            // Bật sáng nút LƯU (Save) của Teams
+            microsoftTeams.pages.config.setValidityState(true);
+
+            // Khi người dùng bấm nút Lưu, Teams sẽ chạy đoạn này
+            microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
+                microsoftTeams.pages.config.setConfig({
+                    websiteUrl: "https://thanhtung1105.pythonanywhere.com/",
+                    contentUrl: "https://thanhtung1105.pythonanywhere.com/",
+                    entityId: "dashboard_team_tab",
+                    suggestedDisplayName: "Dashboard Thống Kê" // Tên hiển thị trên thanh Tab
+                });
+                saveEvent.notifySuccess();
+            });
+        });
+    </script>
+</body>
+</html>

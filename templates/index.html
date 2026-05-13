@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chart Dashboard — RBAC Demo</title>
+    <title>Chart Dashboard — Teams SSO</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -36,7 +36,6 @@
             overflow-x: hidden;
         }
 
-        /* ── Background decorations ── */
         body::before {
             content: '';
             position: fixed;
@@ -58,7 +57,6 @@
             z-index: 0;
         }
 
-        /* ── Header ── */
         .header {
             background: rgba(15,17,23,0.8);
             backdrop-filter: blur(20px);
@@ -87,30 +85,11 @@
             font-size: 18px;
         }
 
-        /* ── Login Panel ── */
         .login-panel {
             display: flex;
             align-items: center;
             gap: 12px;
         }
-        .login-panel label {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-        .login-panel select {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 13px;
-            cursor: pointer;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        .login-panel select:hover { border-color: var(--accent-blue); }
-        .login-panel select:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px rgba(138,180,248,0.15); }
 
         .user-badge {
             display: flex;
@@ -143,7 +122,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* ── Main content ── */
         .main { padding: 32px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
 
         .page-title {
@@ -156,7 +134,6 @@
         }
         .page-subtitle { color: var(--text-secondary); font-size: 14px; margin-bottom: 32px; }
 
-        /* ── Permission badges ── */
         .permissions-bar {
             display: flex;
             align-items: center;
@@ -175,7 +152,6 @@
         .perm-badge.allowed { background: rgba(129,201,149,0.15); color: var(--accent-green); border: 1px solid rgba(129,201,149,0.25); }
         .perm-badge.denied { background: rgba(242,139,130,0.1); color: var(--accent-red); border: 1px solid rgba(242,139,130,0.15); opacity: 0.6; text-decoration: line-through; }
 
-        /* ── Charts Grid ── */
         .charts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -197,9 +173,7 @@
         .chart-card:nth-child(2) { animation-delay: 0.2s; }
         .chart-card:nth-child(3) { animation-delay: 0.3s; }
 
-        @keyframes fadeUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
         .chart-card:hover {
             transform: translateY(-4px);
@@ -207,10 +181,7 @@
             box-shadow: var(--shadow);
         }
 
-        .chart-card.locked {
-            opacity: 0.45;
-            pointer-events: none;
-        }
+        .chart-card.locked { opacity: 0.45; pointer-events: none; }
         .chart-card.locked .chart-header::after {
             content: '🔒 Không có quyền';
             position: absolute;
@@ -241,10 +212,8 @@
         }
         .chart-title { font-size: 15px; font-weight: 600; }
         .chart-desc { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
-
         .chart-body { padding: 20px; }
 
-        /* ── Stat items ── */
         .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .stat-item {
             background: rgba(255,255,255,0.03);
@@ -262,43 +231,18 @@
         .stat-value.purple { color: var(--accent-purple); }
         .stat-value.red { color: var(--accent-red); }
 
-        /* ── Revenue bars ── */
         .revenue-list { display: flex; flex-direction: column; gap: 10px; }
         .revenue-row { display: flex; align-items: center; gap: 12px; }
         .revenue-month { font-size: 12px; color: var(--text-secondary); width: 60px; flex-shrink: 0; }
-        .revenue-bar-bg {
-            flex: 1; height: 24px;
-            background: rgba(255,255,255,0.04);
-            border-radius: 6px;
-            overflow: hidden;
-            position: relative;
-        }
-        .revenue-bar {
-            height: 100%;
-            border-radius: 6px;
-            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            width: 0;
-        }
-        .revenue-val {
-            font-size: 12px; font-weight: 500;
-            width: 70px; text-align: right; flex-shrink: 0;
-            color: var(--text-secondary);
-        }
+        .revenue-bar-bg { flex: 1; height: 24px; background: rgba(255,255,255,0.04); border-radius: 6px; overflow: hidden; }
+        .revenue-bar { height: 100%; border-radius: 6px; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); width: 0; }
+        .revenue-val { font-size: 12px; font-weight: 500; width: 70px; text-align: right; flex-shrink: 0; color: var(--text-secondary); }
 
-        /* ── Threat badge ── */
-        .threat-badge {
-            display: inline-block;
-            padding: 6px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
+        .threat-badge { display: inline-block; padding: 6px 16px; border-radius: 8px; font-size: 14px; font-weight: 700; letter-spacing: 1px; }
         .threat-LOW { background: rgba(129,201,149,0.15); color: var(--accent-green); }
         .threat-MEDIUM { background: rgba(252,173,112,0.15); color: var(--accent-orange); }
         .threat-HIGH { background: rgba(242,139,130,0.15); color: var(--accent-red); }
 
-        /* ── Toast ── */
         .toast {
             position: fixed;
             bottom: 24px; right: 24px;
@@ -319,16 +263,10 @@
         .toast.error { border-left: 3px solid var(--accent-red); }
         .toast.success { border-left: 3px solid var(--accent-green); }
 
-        /* ── Empty state ── */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-secondary);
-        }
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-secondary); }
         .empty-state .icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
         .empty-state p { font-size: 15px; }
 
-        /* ── Spinner ── */
         .spinner {
             width: 20px; height: 20px;
             border: 2px solid rgba(255,255,255,0.1);
@@ -348,20 +286,13 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header class="header">
         <div class="header-brand">
             <div class="icon">📊</div>
             <span>Chart Dashboard</span>
         </div>
-        <div class="login-panel">
-            <label for="userSelect">Đăng nhập giả lập:</label>
-            <select id="userSelect">
-                <option value="">-- Chọn tài khoản --</option>
-                <option value="admin@company.com">admin@company.com</option>
-                <option value="manager@company.com">manager@company.com</option>
-                <option value="staff@company.com">staff@company.com</option>
-            </select>
+        <div class="login-panel" id="loginPanel">
+            <span id="authStatus" style="font-size:13px;color:var(--text-secondary)">⏳ Đang xác thực...</span>
             <div class="user-badge" id="userBadge" style="display:none">
                 <div class="user-avatar" id="userAvatar">A</div>
                 <div class="user-info">
@@ -372,22 +303,17 @@
         </div>
     </header>
 
-    <!-- Main -->
     <main class="main">
         <h1 class="page-title">Dashboard Biểu đồ</h1>
-        <p class="page-subtitle">Hệ thống RBAC — Mỗi vai trò chỉ xem được biểu đồ được cấp quyền.</p>
-
+        <p class="page-subtitle">Hệ thống RBAC — Xác thực qua Microsoft Teams SSO.</p>
         <div class="permissions-bar" id="permBar" style="display:none"></div>
-
-        <div id="content">
-            <div class="empty-state">
-                <div class="icon">👆</div>
-                <p>Vui lòng chọn tài khoản ở góc trên bên phải để bắt đầu.</p>
-            </div>
-        </div>
+        <div id="content"><div class="spinner"></div></div>
     </main>
 
     <div class="toast" id="toast"></div>
+
+    <!-- Microsoft Teams SDK -->
+    <script src="https://res.cdn.office.net/teams-js/2.25.0/js/MicrosoftTeams.min.js"></script>
 
     <script>
         const API = '';
@@ -397,29 +323,49 @@
             { id: 'bao-mat', name: 'Bảo mật', icon: '🛡️', gradient: 'linear-gradient(135deg,#4facfe,#00f2fe)', desc: 'Giám sát an ninh hệ thống' },
         ];
 
-        const userSelect = document.getElementById('userSelect');
         const userBadge = document.getElementById('userBadge');
         const content = document.getElementById('content');
         const permBar = document.getElementById('permBar');
-
-        let currentEmail = '';
+        const loginPanel = document.getElementById('loginPanel');
+        let ssoToken = null;
         let allowedCharts = [];
 
-        userSelect.addEventListener('change', async () => {
-            currentEmail = userSelect.value;
-            if (!currentEmail) {
-                userBadge.style.display = 'none';
-                permBar.style.display = 'none';
-                content.innerHTML = '<div class="empty-state"><div class="icon">👆</div><p>Vui lòng chọn tài khoản ở góc trên bên phải để bắt đầu.</p></div>';
-                return;
+        function getAuthHeaders() {
+            return ssoToken ? { 'Authorization': `Bearer ${ssoToken}` } : {};
+        }
+
+        // Khởi tạo Teams SSO
+        async function init() {
+            try {
+                await microsoftTeams.app.initialize();
+                ssoToken = await microsoftTeams.authentication.getAuthToken();
+                document.getElementById('authStatus').textContent = '🔐 Teams SSO';
+                document.getElementById('authStatus').style.color = 'var(--accent-green)';
+                await loadDashboard();
+            } catch (e) {
+                content.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><p>App cần chạy trong Microsoft Teams.</p><p style="font-size:12px;margin-top:8px;opacity:0.6">' + (e.message || e) + '</p></div>';
+                document.getElementById('authStatus').textContent = '❌ Lỗi xác thực';
+                document.getElementById('authStatus').style.color = 'var(--accent-red)';
             }
+        }
+
+        async function loadDashboard() {
             content.innerHTML = '<div class="spinner"></div>';
             try {
-                const res = await fetch(`${API}/api/my-charts`, { headers: { 'X-Mock-Email': currentEmail } });
+                const res = await fetch(`${API}/api/my-charts`, { headers: getAuthHeaders() });
                 const data = await res.json();
-                if (!data.success) { showToast(data.message, 'error'); return; }
+                if (!data.success) {
+                    // Gọi debug endpoint để lấy thông tin chi tiết
+                    let debugInfo = '';
+                    try {
+                        const dbg = await fetch(`${API}/api/debug-token`, { headers: getAuthHeaders() });
+                        const dbgData = await dbg.json();
+                        debugInfo = '<pre style="text-align:left;font-size:11px;margin-top:16px;padding:12px;background:rgba(255,255,255,0.05);border-radius:8px;overflow-x:auto">' + JSON.stringify(dbgData, null, 2) + '</pre>';
+                    } catch(e) {}
+                    content.innerHTML = '<div class="empty-state"><div class="icon">🚫</div><p>' + (data.message || 'Lỗi') + '</p>' + debugInfo + '</div>';
+                    return;
+                }
 
-                // Update user badge
                 const role = data.user.role;
                 userBadge.style.display = 'flex';
                 document.getElementById('userName').textContent = data.user.name;
@@ -427,14 +373,13 @@
                 const avatar = document.getElementById('userAvatar');
                 avatar.textContent = data.user.name.charAt(0);
                 avatar.className = 'user-avatar ' + role;
-
                 allowedCharts = data.allowed_charts;
                 renderPermBar(allowedCharts);
                 await renderCharts();
-            } catch (e) {
-                showToast('Không thể kết nối server.', 'error');
+            } catch(e) {
+                content.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><p>Lỗi kết nối server</p><p style="font-size:12px;opacity:0.6">' + e + '</p></div>';
             }
-        });
+        }
 
         function renderPermBar(allowed) {
             permBar.style.display = 'flex';
@@ -445,7 +390,6 @@
         async function renderCharts() {
             const grid = document.createElement('div');
             grid.className = 'charts-grid';
-
             for (const chart of CHARTS) {
                 const hasAccess = allowedCharts.includes(chart.id);
                 const card = document.createElement('div');
@@ -455,13 +399,10 @@
                         <div class="chart-icon" style="background:${chart.gradient}">${chart.icon}</div>
                         <div><div class="chart-title">${chart.name}</div><div class="chart-desc">${chart.desc}</div></div>
                     </div>
-                    <div class="chart-body">${hasAccess ? '<div class="spinner"></div>' : '<p style="color:var(--text-secondary);font-size:13px;text-align:center;padding:20px 0">Bạn không có quyền xem biểu đồ này.</p>'}</div>
+                    <div class="chart-body">${hasAccess ? '<div class="spinner"></div>' : '<p style="color:var(--text-secondary);font-size:13px;text-align:center;padding:20px 0">Không có quyền.</p>'}</div>
                 `;
                 grid.appendChild(card);
-
-                if (hasAccess) {
-                    fetchChart(chart.id, card.querySelector('.chart-body'));
-                }
+                if (hasAccess) fetchChart(chart.id, card.querySelector('.chart-body'));
             }
             content.innerHTML = '';
             content.appendChild(grid);
@@ -469,17 +410,12 @@
 
         async function fetchChart(chartId, container) {
             try {
-                const res = await fetch(`${API}/api/charts/${chartId}`, { headers: { 'X-Mock-Email': currentEmail } });
+                const res = await fetch(`${API}/api/charts/${chartId}`, { headers: getAuthHeaders() });
                 const data = await res.json();
                 if (!data.success) { container.innerHTML = `<p style="color:var(--accent-red)">${data.message}</p>`; return; }
                 container.innerHTML = renderChartData(chartId, data.data);
-                // Animate revenue bars
                 if (chartId === 'doanh-thu') {
-                    setTimeout(() => {
-                        container.querySelectorAll('.revenue-bar').forEach(bar => {
-                            bar.style.width = bar.dataset.width;
-                        });
-                    }, 100);
+                    setTimeout(() => container.querySelectorAll('.revenue-bar').forEach(b => b.style.width = b.dataset.width), 100);
                 }
             } catch (e) {
                 container.innerHTML = '<p style="color:var(--accent-red)">Lỗi tải dữ liệu.</p>';
@@ -521,6 +457,8 @@
             t.className = 'toast show ' + type;
             setTimeout(() => t.className = 'toast', 3000);
         }
+
+        init();
     </script>
 </body>
 </html>
